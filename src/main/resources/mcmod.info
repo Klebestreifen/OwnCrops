@@ -1,0 +1,16 @@
+[
+{
+  "modid": "owncrops",
+  "name": "Own Crops",
+  "description": "Adding own crops",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Klebestreifen"],
+  "credits": "pixel-friends.com",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
