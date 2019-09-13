@@ -2,8 +2,11 @@ package io.klebe.owncrops.common;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,14 +23,25 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import io.klebe.owncrops.OwnCrops;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 
 public class ConfigHandler{
 	
 	private List<ItemTemplate> itemsInConfig = new ArrayList<ItemTemplate>();
+	private static ConfigHandler config = null;
+    protected String defaultConfigResourceLocation = "/assets/" + OwnCrops.MODID + "/defaultconfig.xml";
 	
-	private class Edible {
+	public static ConfigHandler getConfigHandler() throws ParserConfigurationException, SAXException, IOException {
+		if(config == null) {
+			config = new ConfigHandler();
+		}
+		return config;
+	}
+	
+	public class Edible {
 		private int amount;
 		private float saturation;
 		
@@ -45,7 +59,7 @@ public class ConfigHandler{
 		}
 	}
 	
-	private class Plantable {
+	public class Plantable {
 		private String cropID;
 		private String dropItemID;
 		private int dropItemMeta;
@@ -69,7 +83,7 @@ public class ConfigHandler{
 		}
 	}
 	
-	private class ItemTemplate {
+	public class ItemTemplate {
 		private String id;
 		private Optional<Edible> edible;
 		private Optional<Plantable> plantable;
@@ -78,6 +92,18 @@ public class ConfigHandler{
 			id = _id;
 			edible = _edible;
 			plantable = _plantable;
+		}
+		
+		public Optional<Plantable> getPlantable(){
+			return plantable;
+		}
+		
+		public Optional<Edible> getEdible(){
+			return edible;
+		}
+		
+		public String getID() {
+			return id;
 		}
 		
 		public void register() {
@@ -144,12 +170,11 @@ public class ConfigHandler{
 			}
 		}
 		
-		ItemTemplate it = new ItemTemplate(id, edible, plantable);
-		it.register();
+		itemsInConfig.add(new ItemTemplate(id, edible, plantable));
 	}
 	
 	private void parseConfig(Node root) {
-		OwnCrops.getInstance().log(Level.INFO, "parsing config");
+		OwnCrops.log(Level.INFO, "parsing config");
 		NodeList items = root.getChildNodes();
 		
 		for(int i = 0; i<items.getLength(); i++ ) {
@@ -160,7 +185,24 @@ public class ConfigHandler{
 		}
 	}
 	
-	public ConfigHandler(File configFile) throws ParserConfigurationException, SAXException, IOException {
+	private void initFile(File configFile) throws IOException {
+		if(!configFile.exists()) {
+    		InputStream in = getClass().getResourceAsStream(defaultConfigResourceLocation);
+    		byte[] buffer = new byte[in.available()];
+    		in.read(buffer);
+    		in.close();
+    		
+    		OutputStream out = new FileOutputStream(configFile);
+    		out.write(buffer);
+    		out.close();
+    	}
+	}
+	
+	protected ConfigHandler() throws ParserConfigurationException, SAXException, IOException {
+		File configFile = new File(Minecraft.getMinecraft().mcDataDir.getAbsolutePath() + "/config/" + OwnCrops.MODID + ".xml");
+		
+		initFile(configFile);
+		
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document document = builder.parse(configFile);
@@ -173,5 +215,15 @@ public class ConfigHandler{
 				parseConfig(item);
 			}
 		}
+	}
+	
+	public void register() {
+		for (ItemTemplate item : itemsInConfig) {
+			item.register();
+		}
+	}
+	
+	public List<ItemTemplate> getItemsInConfig() {
+		return itemsInConfig;
 	}
 }

@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class EventHandler {
 	@SubscribeEvent
 	public static void onItemRegister(RegistryEvent.Register<Item> event) {
-		OwnCrops.getInstance().log(Level.INFO, "RegistryEvent - Items");
+		OwnCrops.log(Level.INFO, "RegistryEvent - Items");
 		
 		Index registry = OwnCrops.getInstance().getRegistry();
 		
@@ -26,28 +26,28 @@ public class EventHandler {
 		
 		
 		for (Item item : registry.getItems()) {
-			OwnCrops.getInstance().log(Level.INFO, "register item " + item.getRegistryName());
+			OwnCrops.log(Level.INFO, "register item " + item.getRegistryName());
 			event.getRegistry().register(item);
 		}
 	}
 	
 	@SubscribeEvent
 	public static void onBlockRegister(RegistryEvent.Register<Block> event) {
-		OwnCrops.getInstance().log(Level.INFO, "RegistryEvent - Blocks");
+		OwnCrops.log(Level.INFO, "RegistryEvent - Blocks");
 		
 		Index registry = OwnCrops.getInstance().getRegistry();
 		
 		registry.registerBlocks();
 		
 		for (Block block : registry.getBlocks()) {
-			OwnCrops.getInstance().log(Level.INFO, "register block " + block.getRegistryName());
+			OwnCrops.log(Level.INFO, "register block " + block.getRegistryName());
 			event.getRegistry().register(block);
 		}
 	}
 	
 	@SubscribeEvent
 	public static void onModelRegister(ModelRegistryEvent event) {
-		OwnCrops.getInstance().log(Level.DEBUG, "ModelRegistryEvent");
+		OwnCrops.log(Level.DEBUG, "ModelRegistryEvent");
 		
 		Index registry = OwnCrops.getInstance().getRegistry();
 		

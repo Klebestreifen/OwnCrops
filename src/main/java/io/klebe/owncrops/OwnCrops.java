@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
 
@@ -23,16 +24,16 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(	modid = OwnCrops.MODID,
 		name = OwnCrops.NAME,
-		version = OwnCrops.VERSION)
+		version = OwnCrops.VERSION,
+		dependencies = OwnCrops.DEPENDENCIES)
 public final class OwnCrops {
     public static final String MODID = "owncrops";
-    public static final String NAME = "OwnCrops";
-    public static final String VERSION = "0.0.1";
+    public static final String NAME = "Own Crops";
+    public static final String VERSION = "0.1.0";
+    public static final String DEPENDENCIES = "";
     
-    private Logger logger = null;
+    private static Logger logger = null;
     private Index registry = new Index();
-    private ConfigHandler config = null;
-    private ResourceLocation defaultConfigResourceLocation = new ResourceLocation(MODID + ":defaultconfig.xml");
     
     @Instance
     private static OwnCrops instance;
@@ -50,43 +51,22 @@ public final class OwnCrops {
     	return instance;
     }
     
-    public boolean log(Level level, String msg) {
-    	boolean condition = logger != null;
-    	if(condition) {
-    		logger.log(level, msg);
+    public static void log(Level level, String msg) {
+    	if(logger == null) {
+    		logger = LogManager.getLogger("owncrops");
     	}
-    	return condition;
+    	logger.log(level, msg);
     }
     
     public Index getRegistry() {
     	return registry;
     }
-    
-    public ConfigHandler getConfig() {
-    	return config;
-    }
+
     
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) throws Exception{
-    	event.getModLog().log(Level.INFO, "pre init " + MODID);
-        this.logger = event.getModLog();
-        
-        initConfig(event);
-    }
-    
-    private void initConfig(FMLPreInitializationEvent event) throws Exception {
-    	File configFile = new File(event.getModConfigurationDirectory() + "/" + MODID + ".xml");
-    	if(!configFile.exists()) {
-    		InputStream in = Minecraft.getMinecraft().getResourceManager().getResource(defaultConfigResourceLocation).getInputStream();
-    		byte[] buffer = new byte[in.available()];
-    		in.read(buffer);
-    		in.close();
-    		
-    		OutputStream out = new FileOutputStream(configFile);
-    		out.write(buffer);
-    		out.close();
-    	}
-    	config = new ConfigHandler(configFile);
+    	log(Level.INFO, "pre init " + MODID);
+    	ConfigHandler.getConfigHandler().register();
     }
 
 }
