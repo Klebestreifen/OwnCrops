@@ -11,7 +11,13 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
 
-version = "0.1.0"
+jar {
+    manifest {
+        attributes("FMLCorePluginContainsFMLMod": "true", "FMLCorePlugin": "io.klebe.owncrops.coremod.FallbackResourcePlugin")
+    }
+}
+
+version = "0.1.1"
 group = "io.klebe.owncrops" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "owncrops"
 

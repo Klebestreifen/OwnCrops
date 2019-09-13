@@ -5,7 +5,7 @@
         <plantable id="crop_rice" drop-item="owncrops:rice" drop-meta="0"/>
     </item>
     <item id="seed_tomato">
-        <plantable id="crop_tomato" drop-item="owncrops:tomato"/>
+        <plantable id="crop_tomato" drop-item="owncrops:tomato" drop-meta="0"/>
     </item>
     <item id="tomato">
         <edible amount="4" saturation="2" />

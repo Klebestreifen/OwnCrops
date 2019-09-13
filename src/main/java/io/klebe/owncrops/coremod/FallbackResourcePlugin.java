@@ -39,5 +39,9 @@ public class FallbackResourcePlugin implements IFMLLoadingPlugin
 	{
 		return null;
 	}
+	
+	public static boolean inMCP() {
+		return IN_MCP;
+	}
 
 }

@@ -37,26 +37,31 @@ public class ClassTransformer implements IClassTransformer
 		MethodNode init = null;
 
 		for (MethodNode mn : classNode.methods){
-			if (mn.name.equals("init")){
+			if (mn.name.equals("init") || mn.name.equals("aq")){
 				init = mn;
 			}
 		}
 
 		if (init != null){
-			OwnCrops.log(Level.INFO, "Patching 'init'");
+			OwnCrops.log(Level.INFO, "Patching " + init.name);
 
 			AbstractInsnNode target = init.instructions.get(0);
 			
 			InsnList toInsert = new InsnList();
 			
 			toInsert.add(new VarInsnNode(Opcodes.ALOAD, 0));
-			toInsert.add(new FieldInsnNode(Opcodes.GETFIELD, "net/minecraft/client/Minecraft", "defaultResourcePacks", "Ljava/util/List;"));
+			if(FallbackResourcePlugin.inMCP()) {
+				OwnCrops.log(Level.WARN, "In MCP");
+				toInsert.add(new FieldInsnNode(Opcodes.GETFIELD, "net/minecraft/client/Minecraft", "defaultResourcePacks", "Ljava/util/List;"));
+			} else {
+				toInsert.add(new FieldInsnNode(Opcodes.GETFIELD, "net/minecraft/client/Minecraft", "field_110449_ao", "Ljava/util/List;"));
+			}
 			toInsert.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "io/klebe/owncrops/coremod/FallbackResourceLoader", "create", "()Lnet/minecraft/client/resources/IResourcePack;", false));
 			toInsert.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, "java/util/List", "add", "(Ljava/lang/Object;)Z", true));
 			toInsert.add(new InsnNode(Opcodes.POP));
 			
 			init.instructions.insertBefore(target, toInsert);
-			OwnCrops.log(Level.INFO, "Patching 'init' done");
+			OwnCrops.log(Level.INFO, "Patching "+ init.name +" done");
 		}
 
 		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);

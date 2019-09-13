@@ -29,7 +29,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public final class OwnCrops {
     public static final String MODID = "owncrops";
     public static final String NAME = "Own Crops";
-    public static final String VERSION = "0.1.0";
+    public static final String VERSION = "0.1.1";
     public static final String DEPENDENCIES = "";
     
     private static Logger logger = null;
