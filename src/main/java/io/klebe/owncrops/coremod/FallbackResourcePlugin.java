@@ -2,6 +2,10 @@ package io.klebe.owncrops.coremod;
 
 import java.util.Map;
 
+import org.apache.logging.log4j.Level;
+
+import io.klebe.owncrops.OwnCrops;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
 @IFMLLoadingPlugin.MCVersion("1.12.2")

@@ -33,7 +33,7 @@ public final class OwnCrops {
     public static final String DEPENDENCIES = "";
     
     private static Logger logger = null;
-    private Index registry = new Index();
+    private LocalRegistry registry = new LocalRegistry();
     
     @Instance
     private static OwnCrops instance;
@@ -58,7 +58,7 @@ public final class OwnCrops {
     	logger.log(level, msg);
     }
     
-    public Index getRegistry() {
+    public LocalRegistry getRegistry() {
     	return registry;
     }
 

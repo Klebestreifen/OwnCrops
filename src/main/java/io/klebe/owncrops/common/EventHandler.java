@@ -1,12 +1,8 @@
 package io.klebe.owncrops.common;
 
 import java.util.List;
-
 import org.apache.logging.log4j.Level;
-
-import io.klebe.owncrops.Index;
 import io.klebe.owncrops.OwnCrops;
-import io.klebe.owncrops.items.CustomStick;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -20,10 +16,7 @@ public class EventHandler {
 	public static void onItemRegister(RegistryEvent.Register<Item> event) {
 		OwnCrops.log(Level.INFO, "RegistryEvent - Items");
 		
-		Index registry = OwnCrops.getInstance().getRegistry();
-		
-		registry.registerItems();
-		
+		LocalRegistry registry = OwnCrops.getInstance().getRegistry();
 		
 		for (Item item : registry.getItems()) {
 			OwnCrops.log(Level.INFO, "register item " + item.getRegistryName());
@@ -35,9 +28,7 @@ public class EventHandler {
 	public static void onBlockRegister(RegistryEvent.Register<Block> event) {
 		OwnCrops.log(Level.INFO, "RegistryEvent - Blocks");
 		
-		Index registry = OwnCrops.getInstance().getRegistry();
-		
-		registry.registerBlocks();
+		LocalRegistry registry = OwnCrops.getInstance().getRegistry();
 		
 		for (Block block : registry.getBlocks()) {
 			OwnCrops.log(Level.INFO, "register block " + block.getRegistryName());
@@ -49,7 +40,7 @@ public class EventHandler {
 	public static void onModelRegister(ModelRegistryEvent event) {
 		OwnCrops.log(Level.DEBUG, "ModelRegistryEvent");
 		
-		Index registry = OwnCrops.getInstance().getRegistry();
+		LocalRegistry registry = OwnCrops.getInstance().getRegistry();
 		
 		for(Item item : registry.getItems()) {
 			if (item instanceof IHasModel) {

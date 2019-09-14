@@ -1,7 +1,6 @@
 package io.klebe.owncrops.common;
 
 import io.klebe.owncrops.OwnCrops;
-import io.klebe.owncrops.items.CustomStick;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 

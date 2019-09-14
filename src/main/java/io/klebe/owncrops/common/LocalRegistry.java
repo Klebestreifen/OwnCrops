@@ -3,7 +3,6 @@ package io.klebe.owncrops.common;
 import java.util.ArrayList;
 import java.util.List;
 import io.klebe.owncrops.OwnCrops;
-import io.klebe.owncrops.items.CustomStick;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
